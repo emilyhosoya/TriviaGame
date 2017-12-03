@@ -19,8 +19,6 @@ var correctAnswer = "";
 ///// FUNCTIONS /////
 //////////////////////
 
-// separate timer into startTime, endTime to clear timer, runningTime to increment
-
 function startTime() {
   timerIsOn = true;
 }
@@ -32,9 +30,10 @@ function stopTime() {
 }
 
 function countdown() {
-  // clearTimeout(timer);
+  startTime();
   secondsLeft = 15;
 
+  // increment down from 15 seconds every 1 second
   timer = setInterval(function() {
     $("#timeLeft").html(--secondsLeft);
 
@@ -47,10 +46,12 @@ function countdown() {
     }
   }, 1000);
 
+  // display in DOM
   $("#timeLeft").html(15);
 }
 
 function updateScorecard() {
+  // display scorecounts
   $("#currentQuestion").html(currentQuestion + 1);
   $("#correctCount").html(correctAnswers);
   $("#incorrectCount").html(wrongAnswers);
@@ -61,14 +62,17 @@ function displayQuestion() {
   countdown();
   updateScorecard();
 
+  // clear out previous question and answers
   $("#question").empty();
   $("#answers").empty();
+
+  // display current question
   $("#question").html(questions[currentQuestion].question);
   console.log(
     `Question #${currentQuestion + 1}: ${questions[currentQuestion].question}`
   );
-  console.log(`The correct answer is ${questions[currentQuestion].answer}`);
 
+  // display answer choices
   $.each(questions[currentQuestion].answers, function(key, value) {
     $("#answers").append(`
     <div class="form-check">
@@ -80,53 +84,67 @@ function displayQuestion() {
         </label>
     </div>`);
   });
+  console.log(`The correct answer is ${questions[currentQuestion].answer}`);
 
   checkAnswer();
-}
-
-function isAnswerCorrect() {
-  if (playerAnswer === correctAnswer) {
-    console.log("Player has submitted the correct answer!");
-    correctAnswers++;
-    nextQuestion();
-    displayQuestion();
-  } else {
-    console.log("Player has submitted the wrong answer!");
-    wrongAnswers++;
-    stopTime();
-    showCorrect();
-  }
 }
 
 function checkAnswer() {
   correctAnswer = questions[currentQuestion].answer;
 
+  // get player's choice
   $("input").click(function() {
     playerAnswer = $("input[name=radios]:checked").val();
-    console.log(`Player has answered ${playerAnswer}`);
+    console.log(`Player has selected ${playerAnswer}`);
   });
 
+  // submit player's choice
   $("#submit").click(function() {
     console.log(`Player has clicked 'submit'.`);
     isAnswerCorrect();
   });
 }
 
-function showCorrect() {
-  setTimeout(function() {
+function isAnswerCorrect() {
+  // if player is correct
+  if (playerAnswer === correctAnswer) {
+    console.log("Player has submitted the correct answer!");
+    correctAnswers++;
     stopTime();
-    $("#answerArea").html(`Answer: ${questions[currentQuestion].explanation}`);
-  }, 10000);
+
+    // congrats message, times out in 3 seconds
+    setTimeout(function() {
+      stopTime();
+      $("#answerArea").html(`<span id="congrats">You are correct!</span>`);
+    }, 3000);
+  } else {
+    // else if player is wrong
+    console.log("Player has submitted the wrong answer!");
+    wrongAnswers++;
+    stopTime();
+
+    // sorry message, times out in 10 seconds
+    setTimeout(function() {
+      stopTime();
+      $("#answerArea").html(
+        `<span id="sorry">Answer: ${
+          questions[currentQuestion].explanation
+        }</span>`
+      );
+    }, 10000);
+  }
 
   nextQuestion();
   displayQuestion();
 }
 
 function nextQuestion() {
+  // if last question -- doesn't seem to be working b/c of timing issues
   if (currentQuestion === questions.length) {
     stopTime();
     endGame();
   } else {
+    // move on to next question
     currentQuestion++;
     displayQuestion();
     // setTimeout(displayQuestion, 15000);
@@ -134,14 +152,25 @@ function nextQuestion() {
 }
 
 function startGame() {
+  // one-time starts game
+  correctAnswers = 0;
+  wrongAnswers = 0;
+  unanswered = 0;
+
+  currentQuestion = 0;
+
   $("#game").css("visibility", "visible");
   $("#instruction").css("display", "none");
   $("#nowPlaying").css("display", "block");
   //   showQuestion = setInterval(nextQuestion, 10000);
-  displayQuestion();
 }
 
 function endGame() {
+  // game ends, player can play again
+  $("#nowPlaying").css("display", "none");
+  $("#gamePlay").html(
+    '<div class="text-center"><h6>Good job. Play again?</h6><button class="btn btn-primary btn-lg" id="start">Start!</button></div>'
+  );
   console.log("Game is over");
 }
 
@@ -150,6 +179,8 @@ function endGame() {
 //////////////////////
 
 $("#start").click(startGame);
+
+// class notes -- you can ignore:
 
 // times out once - takes 2 arguments
 // var onceTimeout = setTimeout(function() {

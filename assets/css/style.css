@@ -70,6 +70,10 @@ a:hover {
   display: none;
 }
 
-#answerArea {
+#congrats {
+  color: green;
+}
+
+#sorry {
   color: red;
 }
