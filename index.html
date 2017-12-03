@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Essential Oils Trivia</title>
+	<link href="./assets/images/favicon.ico" rel="shortcut icon">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Calligraffitti|Open+Sans+Condensed" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+	<link href="./assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container my-5">
+		<div class="card">
+			<div class="card-body">
+				<div class="row text-center mb-5">
+					<div class="col-12">
+						<h1 class="display-3">Essential Oils Trivia</h1>
+						<div id="instruction">
+							<h6>Try to beat the clock!</h6>
+							<button class="btn btn-primary btn-lg" id="start">Start!</button>
+						</div>
+						<div id="nowPlaying">
+							<h6>Seconds Left:</h6>
+							<h5 id="timeLeft"></h5>
+						</div>
+					</div>
+				</div>
+				<div class="row" id="game">
+					<div class="col-sm-12 col-md-6">
+						<h6 class="text-center">Question
+							<span id="currentQuestion"></span> / 10:</h6>
+						<p id="question"></p>
+						<hr>
+						<h6 class="text-center">Your Answer:</h6>
+						<div id="answers"></div>
+						<div class="text-center">
+							<button class="btn btn-primary btn-lg mb-3" id="submit">Submit</button>
+						</div>
+						<div id="answerArea"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 text-center">
+						<div class="card card-dark">
+							<div class="card-body">
+								<h6>Correct:</h6>
+								<h5 id="correctCount"></h5>
+								<hr>
+								<h6>Incorrect:</h6>
+								<h5 id="incorrectCount"></h5>
+								<hr>
+								<h6>Missed:</h6>
+								<h5 id="missedCount"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<p class="text-center">Made by
+						<a href="http://github.com/emilyhosoya">@emilyhosoya</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" type="text/javascript">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" type="text/javascript">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" type="text/javascript">
+	</script>
+	<script src="./assets/javascript/questions.js" type="text/javascript">
+	</script>
+	<script src="./assets/javascript/app.js" type="text/javascript">
+	</script>
+</body>
+
+</html>

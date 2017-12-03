@@ -1,0 +1,75 @@
+body {
+  background: url("../images/flora-bg.jpg") no-repeat center center;
+  background-attachment: fixed;
+}
+
+h1,
+.btn-primary {
+  font-family: "Calligraffitti", cursive;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: "Open Sans Condensed", sans-serif;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+footer p,
+footer a,
+footer a:hover {
+  color: whitesmoke;
+}
+
+.btn-primary {
+  border-radius: 0;
+  border: 1px solid white;
+  background: black;
+  padding: 10px 20px 5px;
+}
+
+.btn-primary:hover {
+  cursor: pointer;
+  border: 1px solid white;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.card-dark {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(30, 30, 30, 0.6);
+  border-radius: 0;
+  /* color: white; */
+  max-width: 250px;
+  margin: auto;
+}
+
+#game {
+  visibility: hidden;
+}
+
+#nowPlaying {
+  display: none;
+}
+
+#answerArea {
+  color: red;
+}
