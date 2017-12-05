@@ -25,29 +25,41 @@ function startTime() {
 
 function stopTime() {
   timerIsOn = false;
-  clearTimeout(timer);
   clearInterval(timer);
 }
 
 function countdown() {
+  stopTime();
   startTime();
-  secondsLeft = 15;
+  secondsLeft = 20;
 
-  // increment down from 15 seconds every 1 second
-  timer = setInterval(function() {
-    $("#timeLeft").html(--secondsLeft);
+  if (timerIsOn) {
+    // if timer is on, increment down from 15 seconds every 1 second
+    timer = setInterval(function() {
+      $("#timeLeft").html(--secondsLeft);
 
-    if (secondsLeft <= 0) {
-      stopTime();
-      console.log("Player ran out of time!");
-      unanswered++;
-      nextQuestion();
-      displayQuestion();
-    }
-  }, 1000);
+      if (secondsLeft <= 0) {
+        unanswered++;
+        stopTime();
+        console.log("Player ran out of time!");
+        $("#answerArea").html(
+          `<span id="sorry">Answer: ${
+            questions[currentQuestion].explanation
+          }</span>`
+        );
+        // display next question after 10 seconds
+        setTimeout(function() {
+          $("#answerArea").empty();
+          nextQuestion();
+        }, 15000);
+      }
+    }, 1000);
+  } else {
+    stopTime();
+  }
 
   // display in DOM
-  $("#timeLeft").html(15);
+  $("#timeLeft").html(20);
 }
 
 function updateScorecard() {
@@ -59,8 +71,8 @@ function updateScorecard() {
 }
 
 function displayQuestion() {
-  countdown();
   updateScorecard();
+  countdown();
 
   // clear out previous question and answers
   $("#question").empty();
@@ -97,12 +109,6 @@ function checkAnswer() {
     playerAnswer = $("input[name=radios]:checked").val();
     console.log(`Player has selected ${playerAnswer}`);
   });
-
-  // submit player's choice
-  $("#submit").click(function() {
-    console.log(`Player has clicked 'submit'.`);
-    isAnswerCorrect();
-  });
 }
 
 function isAnswerCorrect() {
@@ -111,43 +117,40 @@ function isAnswerCorrect() {
     console.log("Player has submitted the correct answer!");
     correctAnswers++;
     stopTime();
-
-    // congrats message, times out in 3 seconds
+    $("#answerArea").html(`<span id="congrats">You are correct!</span>`);
+    // display next question after 3 seconds
     setTimeout(function() {
-      stopTime();
-      $("#answerArea").html(`<span id="congrats">You are correct!</span>`);
+      $("#answerArea").empty();
+      nextQuestion();
     }, 3000);
   } else {
     // else if player is wrong
     console.log("Player has submitted the wrong answer!");
     wrongAnswers++;
     stopTime();
-
-    // sorry message, times out in 10 seconds
+    $("#answerArea").html(
+      `<span id="sorry">Answer: ${
+        questions[currentQuestion].explanation
+      }</span>`
+    );
+    // display next question after 10 seconds
     setTimeout(function() {
-      stopTime();
-      $("#answerArea").html(
-        `<span id="sorry">Answer: ${
-          questions[currentQuestion].explanation
-        }</span>`
-      );
-    }, 10000);
+      $("#answerArea").empty();
+      nextQuestion();
+    }, 15000);
   }
-
-  nextQuestion();
-  displayQuestion();
 }
 
 function nextQuestion() {
-  // if last question -- doesn't seem to be working b/c of timing issues
+  currentQuestion++;
+  console.log(currentQuestion);
+
   if (currentQuestion === questions.length) {
     stopTime();
     endGame();
   } else {
     // move on to next question
-    currentQuestion++;
     displayQuestion();
-    // setTimeout(displayQuestion, 15000);
   }
 }
 
@@ -162,23 +165,38 @@ function startGame() {
   $("#game").css("visibility", "visible");
   $("#instruction").css("display", "none");
   $("#nowPlaying").css("display", "block");
-  //   showQuestion = setInterval(nextQuestion, 10000);
+  displayQuestion();
 }
 
 function endGame() {
   // game ends, player can play again
   $("#nowPlaying").css("display", "none");
-  $("#gamePlay").html(
-    '<div class="text-center"><h6>Good job. Play again?</h6><button class="btn btn-primary btn-lg" id="start">Start!</button></div>'
+  $("#gamePlay").css("display", "none");
+  $("#gameOver").html(
+    '<div class="text-center"><h6>Good job. Play again?</h6><button class="btn btn-primary btn-lg" id="startAgain">Start!</button></div>'
   );
   console.log("Game is over");
+
+  $("#startAgain").click(function() {
+    startGame();
+    $("#gameOver").empty();
+    $("#gamePlay").css("display", "block");
+  });
 }
 
 //////////////////////
 //// MAIN PROCESS ////
 //////////////////////
 
-$("#start").click(startGame);
+$(document).ready(function() {
+  $("#start").click(startGame);
+
+  // submit player's choice
+  $("#submit").click(function() {
+    console.log(`Player has clicked 'submit'.`);
+    isAnswerCorrect();
+  });
+});
 
 // class notes -- you can ignore:
 
